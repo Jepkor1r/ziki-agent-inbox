@@ -19,5 +19,5 @@ A permanent permissions note sets clear limits: "Agent can search and shortlist.
 Amara states a goal, gets back in 10 seconds to three explained choices, approves one, asks about another and rejects the third. The approved bid moves to "Handled" and the progress summary updates. She stays in control without micromanaging her agent.
 
 ## Prototype
-Live: LIVE_URL
-Code: REPO_URL
+Live: https://ziki-agent-inbox.vercel.app/
+Code: https://github.com/Jepkor1r/ziki-agent-inbox
