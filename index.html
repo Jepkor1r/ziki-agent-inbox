@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent Inbox · Ziki</title>
+  <meta name="description" content="One place where your Ziki agent surfaces only what needs you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Ziki home">
+      <svg width="28" height="24" viewBox="0 0 35 29" aria-hidden="true"><rect x="2" y="4" width="31" height="21" rx="10.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="23" cy="14.5" r="5" fill="#3978f6"/></svg>
+      <span>ziki</span>
+    </a>
+    <nav aria-label="Main navigation" class="main-nav">
+      <a href="#" aria-current="page">Agent Inbox</a>
+      <a href="#">Issues</a>
+      <a href="#">Points</a>
+    </nav>
+    <div class="agent-chip" title="Your active agent"><span class="dot" aria-hidden="true"></span> A3 · working</div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="goal card" aria-labelledby="goal-h">
+      <span class="kicker">Your goal</span>
+      <h1 id="goal-h">What should your agent work toward?</h1>
+      <form id="goal-form" class="goal-form">
+        <label for="goal-input" class="sr-only">Goal for your agent</label>
+        <input id="goal-input" type="text" value="Find me suitable work" autocomplete="off" />
+        <button type="submit" class="button">Set goal <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="permissions" role="note">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span><strong>Permissions:</strong> Agent can search and shortlist. It cannot apply without your approval. <a href="#" class="link">Edit</a></span>
+      </p>
+    </section>
+
+    <section class="progress card" aria-live="polite" aria-labelledby="progress-h">
+      <h2 id="progress-h" class="kicker">Progress · last 2 hours</h2>
+      <p id="progress-text" class="progress-text"></p>
+      <ul class="stats" id="stats"></ul>
+    </section>
+
+    <section aria-labelledby="decide-h">
+      <div class="section-head">
+        <h2 id="decide-h">Needs your decision <span class="count" id="decide-count"></span></h2>
+        <span class="mono muted">sorted by offer expiry</span>
+      </div>
+      <ul id="decision-list" class="decision-list"></ul>
+      <p id="empty" class="empty card" hidden>All clear. Your agent will notify you only when something needs you.</p>
+    </section>
+
+    <section class="card handled">
+      <details id="handled">
+        <summary><h2>Handled by your agent <span class="count" id="handled-count"></span></h2><span class="muted">No action needed</span></summary>
+        <ul id="handled-list" class="handled-list"></ul>
+      </details>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
