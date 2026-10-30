@@ -544,3 +544,15 @@ S.log = [
 syncChips();
 renderAll();
 setTimeout(() => start("Find work"), 700);
+
+/* ---------- filter bar: fade the edge that has more to scroll ---------- */
+(() => {
+  const f = $(".filters");
+  const sync = () => {
+    f.classList.toggle("fade-l", f.scrollLeft > 2);
+    f.classList.toggle("fade-r", f.scrollLeft + f.clientWidth < f.scrollWidth - 2);
+  };
+  f.addEventListener("scroll", sync, { passive: true });
+  addEventListener("resize", sync);
+  sync();
+})();

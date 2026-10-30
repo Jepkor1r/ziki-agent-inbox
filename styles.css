@@ -74,12 +74,13 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
 
 /* Filter pill bar */
 .filters-row { display: flex; gap: 10px; align-items: stretch; }
-.filters { flex: 1; min-width: 0; display: flex; gap: 2px; padding: 4px; border-radius: 12px; background: #142140; border: 1px solid var(--zk-divider); overflow-x: auto; scrollbar-width: none; }
+.filters { flex: 1; min-width: 0; display: flex; gap: 0; padding: 4px; border-radius: 12px; background: #142140; border: 1px solid var(--zk-divider); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding: 0 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .filters::-webkit-scrollbar { display: none; }
-.f { display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border-radius: 9px; white-space: nowrap; transition: background-color .15s; }
-.f:hover { background: var(--zk-chip); }
-.f b { font-weight: 700; color: var(--zk-text2); }
-.f-ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--zk-chip); color: var(--zk-text2); }
+.filters.fade-r { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
+.filters.fade-l { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px); mask-image: linear-gradient(90deg, transparent, #000 40px); }
+.filters.fade-l.fade-r { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
+.f { flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 4px 8px 4px 4px; border-radius: 9px; white-space: nowrap; scroll-snap-align: start; transition: background-color .15s; }
+.f-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--zk-chip); color: var(--zk-text2); }
 .f-ic.warn { background: var(--zk-warn-bg); color: var(--zk-warn-fg); }
 .f-ic.ok { background: var(--zk-ok-bg); color: var(--zk-ok-fg); }
 .f-ic.info { background: var(--zk-info-bg); color: var(--zk-info-fg); }
