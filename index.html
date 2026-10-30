@@ -3,67 +3,150 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agent Inbox · Ziki</title>
-  <meta name="description" content="One place where your Ziki agent surfaces only what needs you." />
+  <title>Issues · Ziki</title>
+  <meta name="description" content="Ziki issue tracking interface — HNG15 mini-project" />
+  <link rel="icon" href="assets/favicon.ico" sizes="16x16" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" sizes="any" />
+  <link rel="icon" href="assets/icon1.png" type="image/png" sizes="16x16" />
+  <link rel="icon" href="assets/icon2.png" type="image/png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/apple-icon.png" sizes="180x180" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="Ziki home">
-      <svg width="28" height="24" viewBox="0 0 35 29" aria-hidden="true"><rect x="2" y="4" width="31" height="21" rx="10.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="23" cy="14.5" r="5" fill="#3978f6"/></svg>
-      <span>ziki</span>
-    </a>
-    <nav aria-label="Main navigation" class="main-nav">
-      <a href="#" aria-current="page">Agent Inbox</a>
-      <a href="#">Issues</a>
-      <a href="#">Points</a>
-    </nav>
-    <div class="agent-chip" title="Your active agent"><span class="dot" aria-hidden="true"></span> A3 · working</div>
+
+  <header class="topbar">
+    <div class="topbar-in">
+      <a class="brand" href="#" aria-label="Ziki home"><img src="assets/ziki-mark.svg" alt="" width="24" height="20" /><span>ziki</span></a>
+      <span class="vsep" aria-hidden="true"></span>
+      <button class="project" type="button" aria-label="Switch project, current: Zedu">Zedu <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <nav class="spaces" aria-label="Spaces">
+        <a href="#" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span>Product</span></a>
+        <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4Z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span>Marketing</span></a>
+        <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 7.5 7.5 9.5 4.3-2 7.5-4.9 7.5-9.5V6L12 3Z"/></svg><span>Security</span></a>
+      </nav>
+      <div class="top-actions">
+        <button class="pill-btn agents-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 4v4M9 14h.01M15 14h.01"/></svg><span>Agents</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="pill-btn user-btn" type="button" aria-label="Account menu, JLagart"><span class="avatar-j" aria-hidden="true">J</span><span class="uname">JLagart</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <span class="pts" title="Your points"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><b>977.94</b> pts</span>
+        <button class="bell" type="button" aria-label="Notifications, 31 unread"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bell-n">31</span></button>
+      </div>
+    </div>
   </header>
 
-  <main id="main" class="wrap">
-    <section class="goal card" aria-labelledby="goal-h">
-      <span class="kicker">Your goal</span>
-      <h1 id="goal-h">What should your agent work toward?</h1>
-      <form id="goal-form" class="goal-form">
-        <label for="goal-input" class="sr-only">Goal for your agent</label>
-        <input id="goal-input" type="text" value="Find me suitable work" autocomplete="off" />
-        <button type="submit" class="button">Set goal <span aria-hidden="true">→</span></button>
-      </form>
-      <p class="permissions" role="note">
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-        <span><strong>Permissions:</strong> Agent can search and shortlist. It cannot apply without your approval. <a href="#" class="link">Edit</a></span>
-      </p>
-    </section>
-
-    <section class="progress card" aria-live="polite" aria-labelledby="progress-h">
-      <h2 id="progress-h" class="kicker">Progress · last 2 hours</h2>
-      <p id="progress-text" class="progress-text"></p>
-      <ul class="stats" id="stats"></ul>
-    </section>
-
-    <section aria-labelledby="decide-h">
-      <div class="section-head">
-        <h2 id="decide-h">Needs your decision <span class="count" id="decide-count"></span></h2>
-        <span class="mono muted">sorted by offer expiry</span>
+  <main id="main" class="page">
+    <div class="filters-row">
+      <div class="filters" role="toolbar" aria-label="Issue filters">
+        <button class="f f-inbox is-on" type="button" aria-pressed="true" title="Inbox"><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span class="sr-only">Inbox</span><span class="f-n" data-bind="needs">0</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic warn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9.5 14l2 2 3-4"/></svg></span><b>Requires confirmation</b><span class="f-n">0</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/></svg></span><b>Open</b><span class="f-n">359</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 10v3l2 1M10 3h4"/></svg></span><b>In progress</b><span class="f-n">83</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic ok"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><b>Done</b><span class="f-n">0</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10M7 20h10M8 4c0 5 8 5 8 8s-8 3-8 8"/></svg></span><b>Ready to Merge</b><span class="f-n">0</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic info"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V11M6 4l6 7 6-7"/></svg></span><b>Live</b><span class="f-n">0</span></button>
+        <button class="f" type="button" aria-pressed="false"><span class="f-ic info"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 13 7 5h10l2 8v6H5z"/></svg></span><b>All</b><span class="f-n">798</span></button>
       </div>
-      <ul id="decision-list" class="decision-list"></ul>
-      <p id="empty" class="empty card" hidden>All clear. Your agent will notify you only when something needs you.</p>
+      <button class="sq-btn" type="button" aria-label="Pull requests"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5c5 0 8 2 8 5"/></svg></button>
+    </div>
+
+    <section class="panel" aria-label="Agent">
+      <div class="panel-main">
+        <div class="how">
+          <span class="how-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 13 7 5h10l2 8v6H5z"/></svg></span>
+          <div>
+            <h1 class="how-h">How the Inbox works</h1>
+            <p class="how-p">Agents work alone and stop here when they need you.</p>
+          </div>
+        </div>
+
+        <form id="goal-form" class="goal" autocomplete="off">
+          <label for="goal-input" class="lbl">Goal</label>
+          <div class="goal-row">
+            <input id="goal-input" type="text" placeholder="What should your agent do?" value="Find work" maxlength="60" />
+            <button class="btn-primary" type="submit">Run</button>
+          </div>
+          <div class="chips" role="group" aria-label="Quick goals">
+            <button type="button" class="chip" data-goal="Find work">Find work</button>
+            <button type="button" class="chip" data-goal="Promote product">Promote product</button>
+            <button type="button" class="chip" data-goal="Fix bugs">Fix bugs</button>
+          </div>
+        </form>
+
+        <div class="perms" aria-label="Agent permissions">
+          <span class="lbl">Can</span>
+          <span class="perm ok" title="Reads open issues across your projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Search</span>
+          <span class="perm ok" title="Ranks issues by fit, no commitments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Shortlist</span>
+          <span class="perm ok" title="Confirms reports as an independent verifier"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Verify</span>
+          <span class="perm lock" title="Bidding or publishing waits for your approval"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Bid: needs OK</span>
+        </div>
+      </div>
+
+      <aside class="agent" aria-labelledby="agents-h">
+        <h2 id="agents-h" class="eyebrow">Your agents</h2>
+        <div class="agent-head">
+          <span class="bot" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/></svg><i class="bot-dot" data-bind="dot"></i></span>
+          <div class="agent-id">
+            <div class="agent-name-row"><b>Agent JLagart</b><span class="tag-work">Work</span><button class="icon-btn" type="button" aria-label="Agent settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div>
+            <span class="badge" data-bind="badge">Standing by</span>
+          </div>
+        </div>
+
+        <div class="run">
+          <div class="run-top"><span class="run-line" data-bind="line">Standing by</span><span class="run-pct mono" data-bind="pct">0%</span></div>
+          <div class="bar" aria-hidden="true"><div class="bar-fill" data-bind="bar"></div></div>
+          <ol class="steps" id="steps" aria-label="Agent progress"></ol>
+          <p class="step-detail" id="step-detail" hidden></p>
+        </div>
+
+        <div class="ctrls" role="group" aria-label="Agent controls">
+          <button class="ctl" type="button" id="btn-pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg><span>Pause</span></button>
+          <button class="ctl" type="button" id="btn-stop"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg><span>Stop</span></button>
+        </div>
+
+        <fieldset class="auto">
+          <legend class="lbl">Autonomy</legend>
+          <div class="seg">
+            <input type="radio" name="auto" id="a1" value="1" /><label for="a1" title="Every shortlisted issue waits for you">Ask always</label>
+            <input type="radio" name="auto" id="a2" value="2" checked /><label for="a2" title="Small, low-risk items are handled alone">Big things</label>
+            <input type="radio" name="auto" id="a3" value="3" /><label for="a3" title="Only bids and publishing wait for you">Handle it</label>
+          </div>
+        </fieldset>
+
+        <p class="stats30">Last 30 days: <span data-bind="ok">15</span> confirmed · 2 rejected</p>
+      </aside>
     </section>
 
-    <section class="card handled">
-      <details id="handled">
-        <summary><h2>Handled by your agent <span class="count" id="handled-count"></span></h2><span class="muted">No action needed</span></summary>
-        <ul id="handled-list" class="handled-list"></ul>
-      </details>
+    <div class="tabs" role="tablist" aria-label="Inbox">
+      <button role="tab" id="t-need" aria-controls="p-need" aria-selected="true">Need your input <span class="tn" data-bind="needs">0</span></button>
+      <button role="tab" id="t-design" aria-controls="p-other" aria-selected="false" tabindex="-1">Design feedback needed <span class="tn">0</span></button>
+      <button role="tab" id="t-ideas" aria-controls="p-other" aria-selected="false" tabindex="-1">New ideas <span class="tn">613</span></button>
+      <button role="tab" id="t-drafts" aria-controls="p-other" aria-selected="false" tabindex="-1">Drafted ideas <span class="tn">32</span></button>
+    </div>
+
+    <section id="p-need" role="tabpanel" aria-labelledby="t-need">
+      <div class="table">
+        <div class="thead" aria-hidden="true"><span>Imp.</span><span>Issue</span><span>Status</span><span>Priority</span><span></span></div>
+        <ul id="rows" class="rows" aria-label="Issues that need your input"></ul>
+        <div id="empty" class="empty" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-bind="emptyText">All clear</span></div>
+      </div>
+      <p class="showing">Showing <b data-bind="range">0</b> of <b data-bind="total">0</b> issues</p>
     </section>
+
+    <section id="p-other" role="tabpanel" hidden>
+      <div class="table"><div class="empty"><span>Nothing in this prototype</span></div></div>
+    </section>
+
+    <details class="handled" id="handled">
+      <summary><svg class="h-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg><b>Handled by agent</b><span class="tn" data-bind="handled">0</span></summary>
+      <ul id="handled-list" class="handled-list"></ul>
+    </details>
   </main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button type="button" id="toast-undo">Undo</button></div>
   <script src="script.js"></script>
 </body>
 </html>
