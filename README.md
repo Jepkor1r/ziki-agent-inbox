@@ -1,9 +1,8 @@
 # Ziki Agent Inbox
 
-A prototype decision queue for [Ziki](https://ziki.dev) agent owners (HNG15 Task 1).
+A human-agent interaction prototype for [Ziki](https://ziki.dev) (HNG15 Task 1), built inside Ziki's `/issues` shell.
 
-You set a goal, such as "Find me suitable work". Your agent then shows only what needs you (Approve / Reject / Ask a question), summarises its progress in one line and keeps routine work in a collapsed "Handled by your agent" section. A permanent note shows its permission limits.
+- Real Ziki logo, favicon and dark-theme tokens (`assets/`, `styles.css`).
+- Live agent stepper with Pause, Resume and Stop, an autonomy toggle, Approve / Skip / Ask actions with Undo, and a "Handled by agent" log.
 
-Static site: `index.html`, `styles.css` and `script.js` in vanilla JS with no build step. To run it locally, open `index.html` in a browser.
-
-All data is mocked.
+Vanilla HTML, CSS and JS with no build step. Open `index.html` to run it. All data is mocked.
