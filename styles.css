@@ -202,7 +202,7 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
 
 /* Table */
 .table { border: 1px solid var(--zk-border); border-radius: 12px; }
-.thead, .row-main { display: grid; grid-template-columns: 72px minmax(0,1fr) 56px 104px 148px; align-items: center; }
+.thead, .row-main { display: grid; grid-template-columns: 72px minmax(0,1fr) 56px 96px 80px 148px; align-items: center; }
 .thead { height: 40px; background: var(--zk-seg); color: var(--zk-text2); font-weight: 600; border-bottom: 1px solid var(--zk-border); border-radius: 12px 12px 0 0; }
 .thead span:first-child { text-align: center; }
 .rows { list-style: none; margin: 0; padding: 0; position: relative; }
@@ -231,6 +231,12 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
 .cell-issue { min-width: 0; padding-right: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .row-title { margin: 0; max-width: 100%; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .row.new .row-title::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--electric-blue); vertical-align: 2px; }
+.sub { display: flex; align-items: center; gap: 10px; }
+.num { font-family: var(--mono); font-size: 12px; color: var(--zk-muted); }
+.prio { display: flex; align-items: flex-end; gap: 2px; height: 12px; justify-self: start; cursor: help; }
+.prio i { width: 3px; border-radius: 1px; background: var(--zk-border); }
+.prio i:nth-child(1) { height: 5px; } .prio i:nth-child(2) { height: 8px; } .prio i:nth-child(3) { height: 12px; }
+.prio i.on { background: var(--zk-text2); }
 .hint { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px 0 7px; border-radius: 999px; background: var(--zk-chip); color: var(--zk-text2); font-size: 12px; font-weight: 700; white-space: nowrap; cursor: help; }
 .hint svg { width: 13px; height: 13px; color: var(--zk-accent); }
 .fit { position: relative; width: 40px; height: 40px; display: grid; place-items: center; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--zk-ok-fg); }
@@ -323,11 +329,12 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
   .goals { display: grid; grid-template-columns: repeat(3, 1fr); }
   .goal { flex-direction: column; justify-content: center; gap: 4px; height: 72px; padding: 6px 4px; border-radius: 14px; font-size: 12px; }
   .thead { display: none; }
-  .row-main { grid-template-columns: 48px minmax(0,1fr) auto auto; grid-template-areas: "imp issue issue fit" "imp st acts acts"; row-gap: 10px; padding: 12px 12px 12px 0; }
+  .row-main { grid-template-columns: 48px auto minmax(0,1fr) auto auto; grid-template-areas: "imp issue issue issue fit" "imp st prio acts acts"; column-gap: 10px; row-gap: 10px; padding: 12px 12px 12px 0; }
   .imp { grid-area: imp; align-self: start; width: 34px; height: 42px; }
   .cell-issue { grid-area: issue; padding-right: 8px; }
   .fit { grid-area: fit; align-self: start; }
   .st { grid-area: st; align-self: center; }
+  .prio { grid-area: prio; align-self: center; }
   .acts { grid-area: acts; }
   .ask-box { margin: 0 12px 12px 48px; }
 }

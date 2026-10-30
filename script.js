@@ -25,40 +25,40 @@ const STATUS = { bid: "Bid", verify: "Verify", low: "Optional" };
 
 // level 3 = always asks (bids, publishing), 2 = big, 1 = small
 const POOL = {
-  653: { kind: "bid", level: 3, imp: 9, fit: 92, hint: ["star", "Your skill"], tip: "6 auth fixes merged",
+  653: { kind: "bid", level: 3, imp: 9, prio: 2, fit: 92, hint: ["star", "Your skill"], tip: "6 auth fixes merged",
     title: "[Web] Password-reset request gets API 404 and shows no feedback",
     a: { why: "You fixed 6 auth bugs.", pay: "+120 pts, about 30 min.", risks: "Session code. Merge gate applies." } },
-  1404: { kind: "bid", level: 3, imp: 3, fit: 71, hint: ["pts", "+200 pts"], tip: "Copy is new for you",
+  1404: { kind: "bid", level: 3, imp: 3, prio: 2, fit: 71, hint: ["pts", "+200 pts"], tip: "Copy is new for you",
     title: "[Marketing] Build SEO Comparison Pages (Zedu vs. Discord / Slack)",
     a: { why: "High points, docs you know.", pay: "+200 pts, about 3 hours.", risks: "Public pages. Brand review." } },
-  1377: { kind: "verify", level: 2, imp: 5, fit: 84, hint: ["clock", "10 min"], tip: "One more check unlocks bids", auto: "Verified #1377",
+  1377: { kind: "verify", level: 2, imp: 5, prio: 3, fit: 84, hint: ["clock", "10 min"], tip: "One more check unlocks bids", auto: "Verified #1377",
     title: "[API] Rate-limit headers missing on /events/stream",
     a: { why: "One check unlocks bids.", pay: "+15 pts for 10 min.", risks: "Low. Read-only check." } },
-  1398: { kind: "verify", level: 1, imp: 4, fit: 88, hint: ["star", "Your skill"], tip: "CSS is your top skill", auto: "Verified #1398",
+  1398: { kind: "verify", level: 1, imp: 4, prio: 1, fit: 88, hint: ["star", "Your skill"], tip: "CSS is your top skill", auto: "Verified #1398",
     title: "[Web] Issue list jumps on mobile when votes update",
     a: { why: "CSS bugs are your strength.", pay: "+10 pts for 5 min.", risks: "None. Mobile repro only." } },
-  1361: { kind: "low", level: 1, imp: 2, fit: 58, hint: ["clock", "15 min"], tip: "Low fit, low points", auto: "Skipped #1361",
+  1361: { kind: "low", level: 1, imp: 2, prio: 1, fit: 58, hint: ["clock", "15 min"], tip: "Low fit, low points", auto: "Skipped #1361",
     title: "[Docs] Broken links in llms.txt examples",
     a: { why: "Easy, but off your goal.", pay: "+20 pts for 15 min.", risks: "None. Docs only." } },
-  1420: { kind: "bid", level: 3, imp: 6, fit: 86, hint: ["clock", "20 min"], tip: "Same code as last week",
+  1420: { kind: "bid", level: 3, imp: 6, prio: 2, fit: 86, hint: ["clock", "20 min"], tip: "Same code as last week",
     title: "[Web] Dark-mode toggle flickers on first load",
     a: { why: "You fixed this code recently.", pay: "+90 pts for 20 min.", risks: "Low. One component." } },
-  1426: { kind: "verify", level: 2, imp: 7, fit: 79, hint: ["shield", "Security"], tip: "Needs a second check", auto: "Verified #1426",
+  1426: { kind: "verify", level: 2, imp: 7, prio: 3, fit: 79, hint: ["shield", "Security"], tip: "Needs a second check", auto: "Verified #1426",
     title: "[Security] Google sign-in retries are not rate-limited",
     a: { why: "Security needs two checks.", pay: "+25 pts for 10 min.", risks: "Test account only." } },
-  1411: { kind: "bid", level: 3, imp: 5, fit: 85, hint: ["draft", "Draft ready"], tip: "Posting needs your OK",
+  1411: { kind: "bid", level: 3, imp: 5, prio: 2, fit: 85, hint: ["draft", "Draft ready"], tip: "Posting needs your OK",
     title: "[Marketing] Launch thread for Agent Inbox on X",
     a: { why: "Launch posts reach the most.", pay: "+60 pts. Already drafted.", risks: "Public. You check it first." } },
-  1415: { kind: "verify", level: 2, imp: 4, fit: 80, hint: ["clock", "5 min"], tip: "Confirm before others bid", auto: "Verified #1415",
+  1415: { kind: "verify", level: 2, imp: 4, prio: 3, fit: 80, hint: ["clock", "5 min"], tip: "Confirm before others bid", auto: "Verified #1415",
     title: "[Marketing] Homepage pricing table shows the old plan",
     a: { why: "Wrong prices hurt signups.", pay: "+15 pts for 5 min.", risks: "None. Read-only check." } },
-  1418: { kind: "low", level: 1, imp: 2, fit: 64, hint: ["clock", "10 min"], tip: "Tone matters here", auto: "Skipped #1418",
+  1418: { kind: "low", level: 1, imp: 2, prio: 1, fit: 64, hint: ["clock", "10 min"], tip: "Tone matters here", auto: "Skipped #1418",
     title: "[Marketing] Reply to 3 Product Hunt comments",
     a: { why: "Quick, but speaks for the brand.", pay: "+10 pts for 10 min.", risks: "Public. Hard to undo." } },
-  1431: { kind: "bid", level: 3, imp: 4, fit: 83, hint: ["pts", "+80 pts"], tip: "Pairs with the SEO pages",
+  1431: { kind: "bid", level: 3, imp: 4, prio: 2, fit: 83, hint: ["pts", "+80 pts"], tip: "Pairs with the SEO pages",
     title: "[Marketing] Write a Zedu vs. Slack blog post",
     a: { why: "Reuses your SEO research.", pay: "+80 pts, about 1 hour.", risks: "Public. Needs fact-checks." } },
-  1442: { kind: "bid", level: 3, imp: 6, fit: 81, hint: ["clock", "40 min"], tip: "Repro steps are ready",
+  1442: { kind: "bid", level: 3, imp: 6, prio: 2, fit: 81, hint: ["clock", "40 min"], tip: "Repro steps are ready",
     title: "[Web] Vote button double-submits on slow networks",
     a: { why: "You know the vote code.", pay: "+100 pts, about 40 min.", risks: "Low. Add one guard." } },
 };
@@ -279,6 +279,11 @@ function lookAt(el) {
 }
 
 /* ---------- render: rows ---------- */
+function prioBars(p) {
+  const name = ["low", "medium", "high"][p - 1];
+  return `<span class="prio" role="img" aria-label="Priority ${name}" data-tip="Priority ${name}">${[1, 2, 3].map((k) => `<i class="${k <= p ? "on" : ""}"></i>`).join("")}</span>`;
+}
+
 function rowHTML(it) {
   const ring = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="tr" cx="20" cy="20" r="16"/><circle class="vl" cx="20" cy="20" r="16" pathLength="100" stroke-dasharray="${it.fit} 100"/></svg>`;
   const verb = it.kind === "verify" ? "Confirm" : "Approve";
@@ -287,10 +292,11 @@ function rowHTML(it) {
       <span class="imp" role="img" aria-label="Importance ${it.imp}">${I.up}${it.imp}</span>
       <div class="cell-issue">
         <h3 class="row-title" title="${esc(it.title)}">${esc(it.title)}</h3>
-        <button type="button" class="hint" data-tip="${esc(it.tip)}" data-tip-tap>${I[it.hint[0]]}${esc(it.hint[1])}</button>
+        <div class="sub"><span class="num">#${it.id}</span><button type="button" class="hint" data-tip="${esc(it.tip)}" data-tip-tap>${I[it.hint[0]]}${esc(it.hint[1])}</button></div>
       </div>
       <span class="fit${it.fit < 75 ? " mid" : ""}" role="img" aria-label="Fit ${it.fit}%" data-tip="Fit for you">${ring}${it.fit}</span>
       <span class="st ${it.kind}">${STATUS[it.kind]}</span>
+      ${prioBars(it.prio)}
       <div class="acts">
         <button type="button" class="act ask" data-act="ask" data-tip="Ask" aria-label="Ask about #${it.id}" aria-expanded="${!!it.asking}">${I.ask}</button>
         <button type="button" class="act skip" data-act="skip" data-tip="Skip" aria-label="Skip #${it.id}">${I.x}</button>
