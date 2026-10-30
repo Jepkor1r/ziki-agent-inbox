@@ -46,8 +46,8 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
 /* Header */
 .topbar { background: var(--deep-ocean); border-bottom: 1px solid var(--zk-divider); position: sticky; top: 0; z-index: 20; }
 .topbar-in { max-width: 1104px; margin: 0 auto; height: 64px; padding: 0 24px; display: flex; align-items: center; gap: 14px; }
-.brand { display: flex; align-items: center; gap: 8px; color: var(--zk-text); text-decoration: none; font-weight: 800; font-size: 17px; letter-spacing: -.02em; border-radius: 8px; }
-.brand img { width: 22px; height: auto; }
+.brand { display: flex; align-items: center; border-radius: 8px; flex-shrink: 0; }
+.brand img { display: block; height: 26px; width: auto; }
 .vsep { width: 1px; height: 20px; background: var(--zk-border); }
 .project { display: flex; align-items: center; gap: 6px; font-weight: 700; padding: 6px 8px; border-radius: 10px; }
 .project:hover { background: var(--zk-chip); }
