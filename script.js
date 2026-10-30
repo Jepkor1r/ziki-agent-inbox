@@ -1,115 +1,90 @@
 // Ziki Agent Inbox prototype. Mock data only, no backend.
 
+const svg = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
 const I = {
-  up: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>',
-  check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>',
-  x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>',
-  ask: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>',
-  bug: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="6" width="8" height="14" rx="4"/><path d="M19 13h-3M8 13H5M19 8l-3 1.5M5 8l3 1.5M19 18l-3-1.5M5 18l3-1.5M10 6l-1-2M14 6l1-2"/></svg>',
-  msg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4V5Z"/></svg>',
-  hammer: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-3 3-6-6 3-3ZM11.5 9.5 4 17l3 3 7.5-7.5"/></svg>',
-  shield: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 7.5 7.5 9.5 4.3-2 7.5-4.9 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>',
-  low: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>',
-  bot: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/></svg>',
-  dot: "<i></i>",
-  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>',
-  pause: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>',
-  stop: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>',
+  up: svg('<path d="m18 15-6-6-6 6"/>'),
+  check: svg('<path d="m5 12 4 4L19 6"/>'),
+  x: svg('<path d="M18 6 6 18M6 6l12 12"/>'),
+  ask: svg('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/>'),
+  play: svg('<path d="M8 5v14l11-7L8 5Z"/>'),
+  pause: svg('<path d="M9 6v12M15 6v12"/>'),
+  stop: svg('<rect x="7" y="7" width="10" height="10" rx="1.5"/>'),
+  search: svg('<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'),
+  target: svg('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'),
+  list: svg('<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>'),
+  you: svg('<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>'),
+  clock: svg('<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 1.5"/>'),
+  star: svg('<path d="m12 4 2.4 5 5.4.6-4 3.7 1.1 5.3L12 16l-4.9 2.6 1.1-5.3-4-3.7 5.4-.6L12 4Z"/>'),
+  pts: svg('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>'),
+  shield: svg('<path d="M12 3 4.5 6v5.5c0 4.6 3.2 7.5 7.5 9.5 4.3-2 7.5-4.9 7.5-9.5V6L12 3Z"/>'),
+  draft: svg('<path d="M4 20h4L19 9l-4-4L4 16v4Z"/>'),
+  bot: '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="14" width="30" height="24" rx="8"/><path d="M24 8v6M17 25h.01M31 25h.01M20 31.5q4 2.5 8 0"/></svg>',
 };
 
-const STATUS = {
-  bid: ["", I.hammer, "Ready for bids"],
-  verify: ["amber", I.shield, "Needs confirming"],
-  low: ["blue", I.low, "Low fit"],
-};
+const STATUS = { bid: "Bid", verify: "Verify", low: "Optional" };
 
 // level 3 = always asks (bids, publishing), 2 = big, 1 = small
+const POOL = {
+  653: { kind: "bid", level: 3, imp: 9, fit: 92, hint: ["star", "Your skill"], tip: "6 auth fixes merged",
+    title: "[Web] Password-reset request gets API 404 and shows no feedback",
+    a: { why: "You fixed 6 auth bugs.", pay: "+120 pts, about 30 min.", risks: "Session code. Merge gate applies." } },
+  1404: { kind: "bid", level: 3, imp: 3, fit: 71, hint: ["pts", "+200 pts"], tip: "Copy is new for you",
+    title: "[Marketing] Build SEO Comparison Pages (Zedu vs. Discord / Slack)",
+    a: { why: "High points, docs you know.", pay: "+200 pts, about 3 hours.", risks: "Public pages. Brand review." } },
+  1377: { kind: "verify", level: 2, imp: 5, fit: 84, hint: ["clock", "10 min"], tip: "One more check unlocks bids", auto: "Verified #1377",
+    title: "[API] Rate-limit headers missing on /events/stream",
+    a: { why: "One check unlocks bids.", pay: "+15 pts for 10 min.", risks: "Low. Read-only check." } },
+  1398: { kind: "verify", level: 1, imp: 4, fit: 88, hint: ["star", "Your skill"], tip: "CSS is your top skill", auto: "Verified #1398",
+    title: "[Web] Issue list jumps on mobile when votes update",
+    a: { why: "CSS bugs are your strength.", pay: "+10 pts for 5 min.", risks: "None. Mobile repro only." } },
+  1361: { kind: "low", level: 1, imp: 2, fit: 58, hint: ["clock", "15 min"], tip: "Low fit, low points", auto: "Skipped #1361",
+    title: "[Docs] Broken links in llms.txt examples",
+    a: { why: "Easy, but off your goal.", pay: "+20 pts for 15 min.", risks: "None. Docs only." } },
+  1420: { kind: "bid", level: 3, imp: 6, fit: 86, hint: ["clock", "20 min"], tip: "Same code as last week",
+    title: "[Web] Dark-mode toggle flickers on first load",
+    a: { why: "You fixed this code recently.", pay: "+90 pts for 20 min.", risks: "Low. One component." } },
+  1426: { kind: "verify", level: 2, imp: 7, fit: 79, hint: ["shield", "Security"], tip: "Needs a second check", auto: "Verified #1426",
+    title: "[Security] Google sign-in retries are not rate-limited",
+    a: { why: "Security needs two checks.", pay: "+25 pts for 10 min.", risks: "Test account only." } },
+  1411: { kind: "bid", level: 3, imp: 5, fit: 85, hint: ["draft", "Draft ready"], tip: "Posting needs your OK",
+    title: "[Marketing] Launch thread for Agent Inbox on X",
+    a: { why: "Launch posts reach the most.", pay: "+60 pts. Already drafted.", risks: "Public. You check it first." } },
+  1415: { kind: "verify", level: 2, imp: 4, fit: 80, hint: ["clock", "5 min"], tip: "Confirm before others bid", auto: "Verified #1415",
+    title: "[Marketing] Homepage pricing table shows the old plan",
+    a: { why: "Wrong prices hurt signups.", pay: "+15 pts for 5 min.", risks: "None. Read-only check." } },
+  1418: { kind: "low", level: 1, imp: 2, fit: 64, hint: ["clock", "10 min"], tip: "Tone matters here", auto: "Skipped #1418",
+    title: "[Marketing] Reply to 3 Product Hunt comments",
+    a: { why: "Quick, but speaks for the brand.", pay: "+10 pts for 10 min.", risks: "Public. Hard to undo." } },
+  1431: { kind: "bid", level: 3, imp: 4, fit: 83, hint: ["pts", "+80 pts"], tip: "Pairs with the SEO pages",
+    title: "[Marketing] Write a Zedu vs. Slack blog post",
+    a: { why: "Reuses your SEO research.", pay: "+80 pts, about 1 hour.", risks: "Public. Needs fact-checks." } },
+  1442: { kind: "bid", level: 3, imp: 6, fit: 81, hint: ["clock", "40 min"], tip: "Repro steps are ready",
+    title: "[Web] Vote button double-submits on slow networks",
+    a: { why: "You know the vote code.", pay: "+100 pts, about 40 min.", risks: "Low. Add one guard." } },
+};
+
 const DATA = {
-  work: {
-    found: 12,
-    items: [
-      { id: 653, kind: "bid", level: 3, imp: 9, prio: 2, fit: 92, c: 10, ago: "57 mins ago", av: ["#7c5b3e", "K"],
-        title: "[Web] Password-reset request gets API 404 and shows no feedback: user cannot tell if the email was sent",
-        why: "Matches your 6 merged auth fixes. About 30 min.",
-        a: { why: "You fixed 6 auth bugs. Two agents confirmed this one.", pay: "+120 pts for about 30 minutes.", risks: "Touches session code, so a human merge gate applies." } },
-      { id: 1404, kind: "bid", level: 3, imp: 3, prio: 2, fit: 71, c: 1, ago: "2 hours ago", av: ["#be185d", "J"],
-        title: "[Marketing] Build SEO Comparison Pages (Zedu vs. Discord / Slack)",
-        why: "High points, but copywriting is outside your usual work.",
-        a: { why: "High points, and Zedu docs are in your history.", pay: "+200 pts, roughly 3 hours.", risks: "Public pages. Brand review needed before merge." } },
-      { id: 1377, kind: "verify", level: 2, imp: 5, prio: 3, fit: 84, c: 4, ago: "3 hours ago", av: ["#0f766e", "A"],
-        title: "[API] Rate-limit headers missing on /events/stream",
-        why: "Needs a second verifier. You know this API.",
-        auto: "Verified #1377",
-        a: { why: "One more verifier unlocks bids on this issue.", pay: "+15 pts for a 10-minute check.", risks: "Low. Read-only check, no code changes." } },
-      { id: 1398, kind: "verify", level: 1, imp: 4, prio: 1, fit: 88, c: 2, ago: "4 hours ago", av: ["#1d4ed8", "M"],
-        title: "[Web] Issue list jumps on mobile when votes update",
-        why: "Quick repro check in your top skill.",
-        auto: "Verified #1398",
-        a: { why: "CSS layout bugs are your strongest skill.", pay: "+10 pts for a 5-minute check.", risks: "None. Reproduce on mobile viewport only." } },
-      { id: 1361, kind: "low", level: 1, imp: 2, prio: 1, fit: 58, c: 0, ago: "5 hours ago", av: ["#a16207", "T"],
-        title: "[Docs] Broken links in llms.txt examples",
-        why: "Low fit and low points. Skip it?",
-        auto: "Skipped #1361: low fit",
-        a: { why: "Easy win, but docs are not your goal.", pay: "+20 pts for about 15 minutes.", risks: "None. Docs only." } },
-    ],
-    live: [
-      { id: 1420, kind: "bid", level: 3, imp: 6, prio: 2, fit: 86, c: 3, ago: "just now", av: ["#4338ca", "R"],
-        title: "[Web] Dark-mode toggle flickers on first load",
-        why: "New today. Fits your CSS skill, about 20 min.",
-        a: { why: "Same theme code you fixed last week.", pay: "+90 pts for about 20 minutes.", risks: "Low. One component, easy to test." } },
-      { id: 1426, kind: "verify", level: 2, imp: 7, prio: 3, fit: 79, c: 6, ago: "just now", av: ["#b91c1c", "S"],
-        title: "[Security] Google sign-in retries are not rate-limited",
-        why: "Security report needs a second verifier.",
-        auto: "Verified #1426",
-        a: { why: "Security reports need two independent checks.", pay: "+25 pts for a 10-minute check.", risks: "Use the test account only. No real logins." } },
-    ],
-  },
-  promote: {
-    found: 9,
-    items: [
-      { id: 1404, kind: "bid", level: 3, imp: 3, prio: 2, fit: 90, c: 1, ago: "2 hours ago", av: ["#be185d", "J"],
-        title: "[Marketing] Build SEO Comparison Pages (Zedu vs. Discord / Slack)",
-        why: "Comparison pages drive signups. Strong match for your goal.",
-        a: { why: "Search traffic is the fastest way to promote Zedu.", pay: "+200 pts, roughly 3 hours.", risks: "Public pages. Brand review needed before merge." } },
-      { id: 1411, kind: "bid", level: 3, imp: 5, prio: 2, fit: 85, c: 7, ago: "1 hour ago", av: ["#0369a1", "D"],
-        title: "[Marketing] Launch thread for Agent Inbox on X",
-        why: "Draft is ready. Publishing needs your OK.",
-        a: { why: "Launch posts get the most reach this week.", pay: "+60 pts. Thread is already drafted.", risks: "Public post. You review the final text first." } },
-      { id: 1415, kind: "verify", level: 2, imp: 4, prio: 3, fit: 80, c: 2, ago: "3 hours ago", av: ["#0f766e", "A"],
-        title: "[Marketing] Homepage pricing table shows the old plan",
-        why: "Confirm the bug before others bid.",
-        auto: "Verified #1415",
-        a: { why: "Wrong pricing hurts signups. Quick to confirm.", pay: "+15 pts for a 5-minute check.", risks: "None. Read-only check." } },
-      { id: 1418, kind: "low", level: 1, imp: 2, prio: 1, fit: 64, c: 3, ago: "6 hours ago", av: ["#a16207", "T"],
-        title: "[Marketing] Reply to 3 Product Hunt comments",
-        why: "Small task, but tone matters. Skip?",
-        auto: "Skipped #1418: tone-sensitive",
-        a: { why: "Quick engagement, but replies speak for the brand.", pay: "+10 pts for about 10 minutes.", risks: "Public replies. Wrong tone is hard to undo." } },
-    ],
-    live: [
-      { id: 1431, kind: "bid", level: 3, imp: 4, prio: 2, fit: 83, c: 0, ago: "just now", av: ["#4338ca", "R"],
-        title: "[Marketing] Write a Zedu vs. Slack blog post",
-        why: "New. Pairs well with the SEO pages.",
-        a: { why: "Reuses research from the comparison pages.", pay: "+80 pts, about 1 hour.", risks: "Public post. Needs fact-checking on Slack features." } },
-    ],
-  },
+  work: { found: 12, items: [653, 1404, 1377, 1398, 1361], live: [1420, 1426] },
+  promote: { found: 9, items: [1404, 1411, 1415, 1418], live: [1431], fit: { 1404: 90 } },
+  bugs: { found: 10, items: [653, 1442, 1377, 1398], live: [1420, 1426], fit: { 653: 94 } },
 };
 
 const PHASES = [
-  { name: "Searching", ms: 2600 },
-  { name: "Matching", ms: 1800 },
-  { name: "Shortlisting", ms: 1400 },
-  { name: "Needs you" },
+  { name: "Search", icon: I.search, ms: 2400 },
+  { name: "Match", icon: I.target, ms: 1800 },
+  { name: "Shortlist", icon: I.list, ms: 1200 },
+  { name: "You", icon: I.you },
 ];
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const EASE = "cubic-bezier(.2,.8,.2,1)";
+const AUTO = ["", "Ask me", "Big things only", "Handle it"];
 
 const S = {
-  goalKey: "work",
-  goal: "Find work",
+  goal: null,
   auto: 2,
   mode: "idle", // idle | run | paused | stopped
   phase: 0,
@@ -118,7 +93,6 @@ const S = {
   live: [],
   liveT: 0,
   log: [],
-  openStep: null,
   confirmed: 15,
   undo: null,
 };
@@ -128,31 +102,29 @@ const bind = (k, v) => $$(`[data-bind="${k}"]`).forEach((el) => (el.textContent 
 const announce = (msg) => { $("#live").textContent = ""; setTimeout(() => ($("#live").textContent = msg), 30); };
 const visible = () => S.items.filter((i) => !i.done && i.level >= S.auto);
 const autoHandled = () => S.items.filter((i) => !i.done && i.level < S.auto);
-const ds = () => DATA[S.goalKey];
-const clone = (a) => a.map((x) => ({ ...x, a: { ...x.a }, replies: [] }));
-const now = () => new Date();
+const ds = () => DATA[S.goal || "work"];
+const make = (ids) => ids.map((id) => ({ id, ...POOL[id], fit: ds().fit?.[id] ?? POOL[id].fit }));
+const find = (id) => S.items.find((x) => x.id === id);
 const ago = (d) => {
   const s = Math.round((Date.now() - d) / 1000);
   return s < 45 ? "now" : s < 3600 ? `${Math.round(s / 60)}m` : `${Math.round(s / 3600)}h`;
 };
-const addLog = (ok, text) => S.log.push({ ok, text, at: now(), fresh: true });
+const addLog = (ok, text) => S.log.push({ ok, text, at: new Date(), fresh: true });
+const center = (el) => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
 
 /* ---------- run engine ---------- */
-function start(goalText) {
-  if (goalText) {
-    S.goal = goalText;
-    S.goalKey = /promot|market|launch|grow|seo/i.test(goalText) ? "promote" : "work";
+function start(goal) {
+  if (goal) {
+    S.goal = goal;
     S.items = [];
-    S.live = clone(ds().live);
-    addLog(true, `Goal set: ${goalText}`);
-    syncChips();
+    S.live = make(ds().live);
+    addLog(true, `Goal: ${$(`[data-goal="${goal}"]`).textContent.trim()}`);
   }
   S.mode = "run";
   S.phase = 0;
   S.t = 0;
   S.liveT = 0;
-  S.openStep = null;
-  announce(`Agent searching: ${S.goal}`);
+  announce("Agent working");
   renderAll();
 }
 
@@ -161,14 +133,12 @@ function enterPhase(p) {
   S.t = 0;
   if (p === 3) {
     if (!S.items.length) {
-      S.items = clone(ds().items);
+      S.items = make(ds().items);
       addLog(false, `Dropped ${ds().found - S.items.length} weak matches`);
     }
-    S.items.forEach((i) => (i.fresh = true));
+    S.items.forEach((i, k) => { i.from = "agent"; i.delay = k * 90; });
     const n = visible().length;
-    announce(n ? `${n} ${n === 1 ? "item needs" : "items need"} you` : "All clear");
-  } else {
-    announce(PHASES[p].name);
+    announce(n ? `${n} need you` : "All clear");
   }
   renderAll();
 }
@@ -181,190 +151,269 @@ function tick() {
     else renderRun();
     return;
   }
-  // Needs-you / all-clear phase: keep the page alive
+  // Waiting on the user: keep the page alive with new matches
   S.liveT += 100;
-  if (S.liveT >= 9000) {
+  if (S.liveT >= (S.live.length === ds().live.length ? 5000 : 10000)) {
     S.liveT = 0;
     const next = S.live.shift();
-    if (next) {
-      next.fresh = true;
-      next.isNew = true;
-      S.items.unshift(next);
-      if (next.level >= S.auto) announce(`New: #${next.id} needs you`);
-      else announce(`${next.auto}`);
-    } else {
-      addLog(false, `Scanned ${3 + Math.floor(Math.random() * 6)} new issues, no fit`);
-    }
+    if (!next) return;
+    next.from = "agent";
+    next.isNew = true;
+    S.items.unshift(next);
+    react("nudge");
+    announce(next.level >= S.auto ? `New: #${next.id}` : next.auto);
     renderAll();
   }
 }
 setInterval(tick, 100);
 
-/* ---------- render: agent panel ---------- */
+/* ---------- render: agent hero ---------- */
+let lastState = "";
 function renderRun() {
   const d = ds();
   const fit = d.items.length;
   const f = S.phase < 3 ? Math.min(1, S.t / PHASES[S.phase].ms) : 1;
   const n = visible().length;
-  let pct = 0, line = "Standing by", badge = ["", "Standing by"];
+  let pct = 0, found = 0, kept = 0, state = ["idle", "Standing by"];
 
   if (S.mode !== "idle") {
-    if (S.phase === 0) { pct = 40 * f; line = `Searching · found ${Math.round(d.found * f)}`; }
-    else if (S.phase === 1) { pct = 40 + 30 * f; line = `Found ${d.found} → ${Math.round(d.found - (d.found - fit) * f)} fit`; }
-    else if (S.phase === 2) { pct = 70 + 20 * f; line = `Found ${d.found} → ${fit} fit · ranking`; }
-    else { pct = n ? 90 : 100; line = n ? `Found ${d.found} → ${fit} fit · ${n} need you` : "All clear · watching"; }
-    badge = S.phase < 3 ? ["", PHASES[S.phase].name] : n ? ["wait", "Waiting for you"] : ["ok", "All clear"];
+    if (S.phase === 0) { pct = 40 * f; found = Math.round(d.found * f); kept = found; }
+    else if (S.phase === 1) { pct = 40 + 30 * f; found = d.found; kept = Math.round(d.found - (d.found - fit) * f); }
+    else { pct = S.phase === 2 ? 70 + 20 * f : n ? 90 : 100; found = d.found; kept = fit; }
+    state = S.phase < 3 ? ["work", "Working"] : n ? ["need", "Needs you"] : ["idle", "All clear"];
   }
-  if (S.mode === "paused") { badge = ["paused", "Paused"]; line = `Paused · ${line}`; }
-  if (S.mode === "stopped") { badge = ["stopped", "Stopped"]; line = "Stopped"; pct = 0; }
+  if (S.mode === "paused") state = ["paused", "Paused"];
+  if (S.mode === "stopped") { state = ["stopped", "Stopped"]; pct = 0; }
 
-  bind("line", line);
-  bind("pct", `${Math.round(pct)}%`);
-  const bar = $('[data-bind="bar"]');
-  bar.style.transform = `scaleX(${pct / 100})`;
-  bar.classList.toggle("wait", S.mode !== "stopped" && S.phase === 3 && n > 0);
-  const b = $('[data-bind="badge"]');
-  b.className = `badge ${badge[0]}`;
-  b.textContent = badge[1];
-  const dot = $('[data-bind="dot"]');
-  dot.classList.toggle("live", S.mode === "run" && S.phase < 3);
-  dot.style.background = S.mode === "stopped" ? "var(--zk-bad-fg)" : S.mode === "paused" ? "var(--zk-muted)" : S.phase === 3 && n && S.mode !== "idle" ? "var(--zk-warn-fg)" : "";
+  $("#n-found").textContent = found;
+  $("#n-fit").textContent = kept;
+  $("#prog").setAttribute("aria-label", `Found ${found}, ${kept} good fits`);
+  const need = S.mode !== "stopped" && S.mode !== "idle" && S.phase === 3 && n > 0;
+  $("#bar").style.transform = $("#bar-need").style.transform = `scaleX(${pct / 100})`;
+  $("#bar-need").style.opacity = need ? 1 : 0;
+
+  const ava = $("#ava");
+  ["idle", "work", "need", "paused", "stopped"].forEach((k) => ava.classList.toggle(`is-${k}`, state[0] === k));
+  if (state[1] !== lastState) {
+    lastState = state[1];
+    const el = $("#state");
+    el.textContent = state[1];
+    if (!reduced) el.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], { duration: 300, easing: EASE });
+  }
 }
 
-function stepDetail(i) {
+function stepTip(i) {
   const d = ds();
-  const fit = d.items.length;
   return [
-    `Scanned 359 open issues for “${S.goal}”.`,
-    "Ranked by your skills, history and points.",
-    `Kept ${fit} best fits, dropped ${d.found - fit}.`,
-    `${visible().length} waiting on you, ${autoHandled().length} handled alone.`,
+    "Search · 359 open issues",
+    "Match · your skills and points",
+    `Shortlist · kept ${d.items.length} of ${d.found}`,
+    `You · ${visible().length} need you`,
   ][i];
 }
 
 function renderSteps() {
-  const ol = $("#steps");
   const active = S.mode !== "idle" && S.mode !== "stopped";
   const n = visible().length;
-  ol.className = `steps${S.mode === "paused" ? " paused-run" : ""}`;
-  ol.parentElement.classList.toggle("paused-run", S.mode === "paused");
-  ol.innerHTML = PHASES.map((p, i) => {
+  $(".hero-run").classList.toggle("is-paused-run", S.mode === "paused");
+  $("#steps").innerHTML = PHASES.map((p, i) => {
     let cls = "";
     if (active) {
       if (i < S.phase || (i === 3 && S.phase === 3 && !n)) cls = "done";
       else if (i === S.phase) cls = i === 3 ? "now need" : "now";
     }
-    const label = i === 3 && cls === "done" ? "All clear" : p.name;
-    const icon = cls === "done" ? I.check : cls.startsWith("now") ? I.dot : "";
-    const state = cls === "done" ? "done" : cls ? "current" : "pending";
-    return `<li class="${cls}"><button type="button" class="step" data-step="${i}" aria-expanded="${S.openStep === i}" aria-controls="step-detail" aria-label="${label}, ${state}"><span class="sd">${icon}</span><span class="sl">${label}</span></button></li>`;
+    const state = cls === "done" ? "done" : cls ? "now" : "next";
+    return `<li class="${cls}"><button type="button" class="step" data-tip="${esc(stepTip(i))}" data-tip-tap aria-label="${p.name}, ${state}">${cls === "done" ? I.check : p.icon}</button></li>`;
   }).join("");
-  const det = $("#step-detail");
-  det.hidden = S.openStep === null;
-  if (S.openStep !== null) det.textContent = stepDetail(S.openStep);
-  // controls
+
   const pause = $("#btn-pause");
   const paused = S.mode === "paused";
-  pause.innerHTML = `${paused ? I.play : I.pause}<span>${paused ? "Resume" : "Pause"}</span>`;
+  pause.innerHTML = paused ? I.play : I.pause;
+  pause.dataset.tip = paused ? "Resume" : "Pause";
+  pause.setAttribute("aria-label", pause.dataset.tip);
   pause.classList.toggle("is-on", paused);
   pause.disabled = S.mode === "idle" || S.mode === "stopped";
-  pause.style.opacity = pause.disabled ? ".45" : "";
   const stop = $("#btn-stop");
   const stopped = S.mode === "stopped" || S.mode === "idle";
-  stop.innerHTML = `${stopped ? I.play : I.stop}<span>${stopped ? "Start" : "Stop"}</span>`;
+  stop.innerHTML = stopped ? I.play : I.stop;
+  stop.dataset.tip = stopped ? "Start" : "Stop";
+  stop.setAttribute("aria-label", stop.dataset.tip);
   stop.classList.toggle("danger", !stopped);
+  $$(".goal").forEach((g) => g.setAttribute("aria-pressed", g.dataset.goal === S.goal));
+}
+
+/* ---------- agent reactions ---------- */
+function react(kind) {
+  const ava = $("#ava");
+  ava.classList.remove("cheer", "nudge");
+  void ava.offsetWidth;
+  ava.classList.add(kind);
+  setTimeout(() => ava.classList.remove(kind), 600);
+  if (kind === "cheer" && !reduced) confetti();
+}
+
+function confetti() {
+  const box = $(".confetti");
+  const colors = ["var(--zk-ok-fg)", "var(--sky-tint)", "var(--zk-warn-fg)", "var(--electric-blue)"];
+  for (let k = 0; k < 10; k++) {
+    const dot = document.createElement("i");
+    dot.style.background = colors[k % 4];
+    box.append(dot);
+    const a = (k / 10) * Math.PI * 2 + Math.random() * 0.4;
+    const r = 62 + Math.random() * 18;
+    dot.animate(
+      [{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: `translate(${Math.cos(a) * r}px,${Math.sin(a) * r}px) scale(.4)`, opacity: 0 }],
+      { duration: 650, easing: "cubic-bezier(.1,.7,.3,1)" }
+    ).onfinish = () => dot.remove();
+  }
+}
+
+function lookAt(el) {
+  const ava = $("#ava");
+  if (!el || S.mode === "paused") { ava.style.setProperty("--ex", "0px"); ava.style.setProperty("--ey", "0px"); return; }
+  const [ax, ay] = center(ava);
+  const [x, y] = center(el);
+  const dx = x - ax, dy = y - ay, len = Math.hypot(dx, dy) || 1;
+  ava.style.setProperty("--ex", `${((dx / len) * 3.5).toFixed(1)}px`);
+  ava.style.setProperty("--ey", `${((dy / len) * 3).toFixed(1)}px`);
 }
 
 /* ---------- render: rows ---------- */
-function prioBars(p) {
-  const name = ["low", "medium", "high"][p - 1];
-  return `<span class="prio" role="img" aria-label="Priority ${name}">${[1, 2, 3].map((k) => `<i class="${k <= p ? "on" : ""}"></i>`).join("")}</span>`;
-}
-
 function rowHTML(it) {
-  const [sc, si, st] = STATUS[it.kind];
-  const fitCls = it.fit >= 75 ? "" : "mid";
-  const approveLbl = it.kind === "verify" ? "Confirm" : "Approve";
-  return `<div class="row-main">
+  const ring = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="tr" cx="20" cy="20" r="16"/><circle class="vl" cx="20" cy="20" r="16" pathLength="100" stroke-dasharray="${it.fit} 100"/></svg>`;
+  const verb = it.kind === "verify" ? "Confirm" : "Approve";
+  return `<div class="swipe-bg" aria-hidden="true"><span class="sb sb-ok"><span class="chk">${I.check}</span>${verb}</span><span class="sb sb-skip">Skip${I.x}</span></div>
+    <div class="row-main" role="group" tabindex="0" aria-label="#${it.id} ${esc(it.title)}" aria-describedby="row-help" aria-keyshortcuts="ArrowRight ArrowLeft A">
       <span class="imp" role="img" aria-label="Importance ${it.imp}">${I.up}${it.imp}</span>
       <div class="cell-issue">
         <h3 class="row-title" title="${esc(it.title)}">${esc(it.title)}</h3>
-        <div class="meta"><span>#${it.id}</span><span>${I.bug}</span><span>${I.msg}${it.c}</span><span>${it.ago}</span></div>
-        <div class="why"><span class="fit ${fitCls}" title="How well this fits your goal and skills"><span class="fit-bar"><i style="transform:scaleX(${it.fit / 100})"></i></span>${it.fit}% fit</span><span class="why-t" title="${esc(it.why)}">${esc(it.why)}</span></div>
-        <div class="acts">
-          <button type="button" class="act approve" data-act="approve" aria-label="${approveLbl} #${it.id}">${I.check}${approveLbl}</button>
-          <button type="button" class="act skip" data-act="skip" aria-label="Skip #${it.id}">${I.x}Skip</button>
-          <button type="button" class="act ask" data-act="ask" aria-expanded="${!!it.asking}" aria-controls="ask-${it.id}" aria-label="Ask agent about #${it.id}">${I.ask}Ask</button>
-        </div>
+        <button type="button" class="hint" data-tip="${esc(it.tip)}" data-tip-tap>${I[it.hint[0]]}${esc(it.hint[1])}</button>
       </div>
-      <div class="cell-status"><span class="status ${sc}">${si}${st}</span></div>
-      <div class="cell-prio">${prioBars(it.prio)}</div>
-      <span class="av" style="background:${it.av[0]}" aria-hidden="true">${it.av[1]}</span>
+      <span class="fit${it.fit < 75 ? " mid" : ""}" role="img" aria-label="Fit ${it.fit}%" data-tip="Fit for you">${ring}${it.fit}</span>
+      <span class="st ${it.kind}">${STATUS[it.kind]}</span>
+      <div class="acts">
+        <button type="button" class="act ask" data-act="ask" data-tip="Ask" aria-label="Ask about #${it.id}" aria-expanded="${!!it.asking}">${I.ask}</button>
+        <button type="button" class="act skip" data-act="skip" data-tip="Skip" aria-label="Skip #${it.id}">${I.x}</button>
+        <button type="button" class="act approve" data-act="approve" data-tip="${verb}" aria-label="${verb} #${it.id}">${I.check}</button>
+      </div>
     </div>
-    ${it.asking ? `<div class="ask-box" id="ask-${it.id}">
-      ${it.replies.map((r) => `<div class="reply"><span class="bot-s" aria-hidden="true">${I.bot}</span><span><span class="q">${esc(r.q)}</span> ${r.a ? esc(r.a) : '<span class="typing" aria-label="Agent is typing">•••</span>'}</span></div>`).join("")}
-      <div class="ask-chips" role="group" aria-label="Quick questions">
-        <button type="button" class="chip" data-q="why">Why this?</button>
-        <button type="button" class="chip" data-q="pay">Pay?</button>
-        <button type="button" class="chip" data-q="risks">Risks?</button>
+    ${it.asking ? `<div class="ask-box" role="group" aria-label="Ask your agent">
+      <div class="ask-q">
+        <button type="button" data-q="why" aria-pressed="${it.q === "why"}"><span aria-hidden="true">❓</span>Why</button>
+        <button type="button" data-q="pay" aria-pressed="${it.q === "pay"}"><span aria-hidden="true">💰</span>Pay</button>
+        <button type="button" data-q="risks" aria-pressed="${it.q === "risks"}"><span aria-hidden="true">⚠️</span>Risks</button>
       </div>
-      <form class="ask-form" data-act="send"><label class="sr-only" for="q-${it.id}">Ask your agent</label><input id="q-${it.id}" placeholder="Ask anything…" maxlength="80" /><button type="submit">Send</button></form>
+      <p class="ask-a"${it.q ? "" : " hidden"}><span class="mini-bot">${I.bot}</span><span class="ask-t">${it.q && it.typed ? esc(it.a[it.q]) : ""}</span></p>
     </div>` : ""}`;
+}
+
+function flyFromAgent(li, delay = 0) {
+  if (reduced) return;
+  const [ax, ay] = center($("#ava"));
+  const [x, y] = center(li);
+  li.animate(
+    [{ transform: `translate(${ax - x}px,${ay - y}px) scale(.15)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+    { duration: 600, delay, easing: EASE, fill: "backwards" }
+  );
+}
+
+function leave(li, how) {
+  const ul = $("#rows");
+  if (reduced) return li.remove();
+  const top = li.offsetTop;
+  li.style.top = `${top}px`;
+  li.classList.add("leaving");
+  if (how === "ok" || how === "skip") {
+    li.classList.add(`to-${how}`, `out-${how}`);
+    li.style.setProperty("--p", 1);
+    $(".row-main", li).style.transform = "";
+    li.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, delay: 380, fill: "forwards" }).onfinish = () => li.remove();
+  } else {
+    const [ax, ay] = center($("#ava"));
+    const [x, y] = center(li);
+    li.animate(
+      [{ transform: "none", opacity: 1 }, { transform: `translate(${ax - x}px,${ay - y}px) scale(.15)`, opacity: 0 }],
+      { duration: 550, easing: "cubic-bezier(.5,0,.75,0)", fill: "forwards" }
+    ).onfinish = () => li.remove();
+  }
+  ul.append(li);
 }
 
 const rowEls = new Map();
 function renderRows() {
   const ul = $("#rows");
-  const show = S.phase === 3 && S.mode !== "idle" ? visible() : [];
+  const show = S.phase === 3 && S.mode !== "idle" && S.mode !== "stopped" ? visible() : [];
   const ids = new Set(show.map((i) => i.id));
+  const first = new Map([...rowEls].map(([id, li]) => [id, li.getBoundingClientRect().top]));
+
   for (const [id, li] of rowEls) {
-    if (ids.has(id) || li.dataset.leaving) continue;
-    li.dataset.leaving = "1";
-    li.classList.add(li.dataset.out || "leave-skip");
-    setTimeout(() => { li.remove(); rowEls.delete(id); }, reduced ? 0 : 340);
+    if (ids.has(id)) continue;
+    rowEls.delete(id);
+    leave(li, li.dataset.out || "agent");
   }
   let prev = null;
   show.forEach((it) => {
     let li = rowEls.get(it.id);
-    if (li && li.dataset.leaving) { li.remove(); rowEls.delete(it.id); li = null; }
     if (!li) {
       li = document.createElement("li");
       li.className = "row";
       li.dataset.id = it.id;
       li.innerHTML = rowHTML(it);
       rowEls.set(it.id, li);
-      it.dirty = false;
+      it.enter = true;
     } else if (it.dirty) {
+      const focused = document.activeElement;
+      const sel = focused && li.contains(focused) ? (focused.dataset.q ? `[data-q=${focused.dataset.q}]` : focused.dataset.act ? `[data-act=${focused.dataset.act}]` : ".row-main") : null;
       li.innerHTML = rowHTML(it);
-      it.dirty = false;
+      if (sel) $(sel, li)?.focus();
     }
+    it.dirty = false;
     li.classList.toggle("new", !!it.isNew);
-    if (it.fresh) { li.classList.remove("enter"); void li.offsetWidth; li.classList.add("enter"); it.fresh = false; }
     const want = prev ? prev.nextSibling : ul.firstChild;
     if (want !== li) ul.insertBefore(li, want);
     prev = li;
   });
+
+  // FLIP the rows that stayed, fly in the new ones
+  show.forEach((it) => {
+    const li = rowEls.get(it.id);
+    if (it.enter) {
+      it.enter = false;
+      if (it.from === "agent") flyFromAgent(li, it.delay || 0);
+      else if (!reduced) li.animate([{ opacity: 0, transform: "translateY(-8px)" }, { opacity: 1, transform: "none" }], { duration: 300, easing: EASE });
+      it.from = null;
+      it.delay = 0;
+    } else if (first.has(it.id) && !reduced) {
+      const dy = first.get(it.id) - li.getBoundingClientRect().top;
+      if (Math.abs(dy) > 1) li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 320, easing: EASE });
+    }
+  });
+
   const n = show.length;
-  const empty = $("#empty");
-  empty.hidden = n > 0;
-  bind("emptyText", S.mode === "stopped" ? "Agent stopped" : S.phase < 3 || S.mode === "idle" ? "Agent is looking…" : "All clear");
+  $("#empty").hidden = n > 0;
+  bind("emptyText", S.mode === "stopped" ? "Stopped" : S.mode === "idle" ? "Pick a goal" : S.phase < 3 ? "Looking…" : "All clear");
   bind("needs", n);
-  bind("range", n ? `1–${n}` : "0");
-  bind("total", n);
 }
 
 /* ---------- render: handled ---------- */
 function renderHandled() {
-  const derived = S.phase === 3 ? autoHandled().map((i) => ({ ok: true, text: `${i.auto || `Shortlisted #${i.id}`} (auto)`, at: null, auto: true, id: i.id })) : [];
+  const derived = S.phase === 3 ? autoHandled().map((i) => ({ ok: i.kind !== "low", text: i.auto || `Shortlisted #${i.id}`, at: null })) : [];
   const all = [...derived, ...S.log.slice().reverse()];
   $("#handled-list").innerHTML = all.map((h) =>
-    `<li class="${h.fresh || h.auto ? "enter" : ""}"><span class="hi ${h.ok ? "" : "x"}" aria-hidden="true">${h.ok ? I.check : I.x}</span><span>${esc(h.text)}</span><span class="t">${h.at ? ago(h.at) : "auto"}</span></li>`
+    `<li class="${h.fresh ? "enter" : ""}"><span class="hi ${h.ok ? "" : "x"}" aria-hidden="true">${h.ok ? I.check : I.x}</span><span>${esc(h.text)}</span><span class="t">${h.at ? ago(h.at) : "auto"}</span></li>`
   ).join("");
   S.log.forEach((h) => (h.fresh = false));
   bind("handled", all.length);
 }
 
-function renderAll() { renderRun(); renderSteps(); renderRows(); renderHandled(); bind("ok", S.confirmed); }
+function renderAll() {
+  renderRun();
+  renderSteps();
+  renderRows();
+  renderHandled();
+  bind("ok", S.confirmed);
+  $(".stat.ok").setAttribute("aria-label", `${S.confirmed} confirmed in 30 days`);
+}
 
 /* ---------- toast + undo ---------- */
 function toast(msg, undo) {
@@ -386,134 +435,226 @@ $("#toast-undo").addEventListener("click", () => {
 /* ---------- row actions ---------- */
 function decide(it, act) {
   const li = rowEls.get(it.id);
-  if (li) li.dataset.out = act === "approve" ? "leave-ok" : "leave-skip";
+  if (li) li.dataset.out = act === "approve" ? "ok" : "skip";
+  const had = li && li.contains(document.activeElement);
+  const order = visible().map((i) => i.id);
+  const nextId = order[order.indexOf(it.id) + 1] ?? order[order.indexOf(it.id) - 1];
   it.done = true;
   it.asking = false;
-  const verb = act === "approve" ? (it.kind === "verify" ? "Confirmed" : "Bid sent on") : "Skipped";
-  addLog(act === "approve", `${verb} #${it.id} (you)`);
-  if (act === "approve" && it.kind === "verify") S.confirmed++;
+  const verb = act === "approve" ? (it.kind === "verify" ? "Confirmed" : "Bid sent ·") : "Skipped";
+  addLog(act === "approve", `${verb} #${it.id}`);
   const entry = S.log[S.log.length - 1];
-  // focus the next row's first action, or the tab if none left
-  const order = visible().map((i) => i.id);
+  if (act === "approve") {
+    if (it.kind === "verify") S.confirmed++;
+    react("cheer");
+  }
   renderAll();
-  const nextId = order[0];
-  setTimeout(() => {
-    const nextBtn = nextId && rowEls.get(nextId)?.querySelector("[data-act=approve]");
-    (nextBtn || $("#t-need")).focus();
-  }, reduced ? 0 : 360);
+  if (had) (rowEls.get(nextId)?.querySelector(".row-main") || $("#t-need")).focus();
+  announce(`${verb} #${it.id}`);
   toast(`${verb} #${it.id}`, () => {
     it.done = false;
-    it.fresh = true;
-    it.dirty = true;
+    it.from = null;
     S.log = S.log.filter((l) => l !== entry);
     if (act === "approve" && it.kind === "verify") S.confirmed--;
     renderAll();
-    rowEls.get(it.id)?.querySelector("[data-act=approve]")?.focus();
+    rowEls.get(it.id)?.querySelector(".row-main")?.focus();
     announce(`Undone. #${it.id} is back`);
   });
 }
 
-const ANSWER_FALLBACK = "Best guess: low risk, worth it. Approve if unsure.";
-function ask(it, key, text) {
-  const q = text || { why: "Why this?", pay: "Pay?", risks: "Risks?" }[key];
-  const r = { q, a: "" };
-  it.replies = [...it.replies.slice(-1), r];
+function toggleAsk(it) {
+  it.asking = !it.asking;
   it.dirty = true;
   renderRows();
-  setTimeout(() => {
-    r.a = it.a[key] || ANSWER_FALLBACK;
-    it.dirty = true;
-    renderRows();
-    announce(`Agent: ${r.a}`);
-    rowEls.get(it.id)?.querySelector(`[data-q=${key || "why"}]`)?.focus();
-  }, reduced ? 200 : 700);
+  const el = rowEls.get(it.id);
+  (it.asking ? el.querySelector("[data-q]") : el.querySelector("[data-act=ask]")).focus();
 }
 
-$("#rows").addEventListener("click", (e) => {
+function ask(it, key) {
+  it.q = key;
+  it.typed = false;
+  it.dirty = true;
+  renderRows();
+  const li = rowEls.get(it.id);
+  const out = $(".ask-t", li);
+  const text = it.a[key];
+  announce(`Agent: ${text}`);
+  clearInterval(it.timer);
+  if (reduced) { out.textContent = text; it.typed = true; return; }
+  let k = 0;
+  out.innerHTML = '<span class="caret"></span>';
+  setTimeout(() => {
+    it.timer = setInterval(() => {
+      k++;
+      out.innerHTML = `${esc(text.slice(0, k))}<span class="caret"></span>`;
+      if (k >= text.length) { clearInterval(it.timer); it.typed = true; setTimeout(() => (out.textContent = text), 500); }
+    }, 22);
+  }, 280);
+}
+
+const rowsEl = $("#rows");
+const itemOf = (el) => { const li = el.closest(".row"); return li && !li.classList.contains("leaving") ? find(+li.dataset.id) : null; };
+
+rowsEl.addEventListener("click", (e) => {
+  if (swallowClick) return;
   const btn = e.target.closest("button");
   if (!btn) return;
-  const li = btn.closest(".row");
-  const it = S.items.find((x) => x.id === +li.dataset.id);
+  const it = itemOf(btn);
   if (!it || it.done) return;
-  it.isNew = false;
+  if (it.isNew) { it.isNew = false; rowEls.get(it.id).classList.remove("new"); }
   if (btn.dataset.q) return ask(it, btn.dataset.q);
   const act = btn.dataset.act;
-  if (act === "ask") {
-    it.asking = !it.asking;
-    it.dirty = true;
-    renderRows();
-    const el = rowEls.get(it.id);
-    (it.asking ? el.querySelector("[data-q]") : el.querySelector("[data-act=ask]")).focus();
-  } else if (act === "approve" || act === "skip") {
-    decide(it, act);
+  if (act === "ask") toggleAsk(it);
+  else if (act === "approve" || act === "skip") decide(it, act);
+});
+
+rowsEl.addEventListener("keydown", (e) => {
+  const it = itemOf(e.target);
+  if (!it) return;
+  if (e.key === "Escape" && it.asking) { toggleAsk(it); return; }
+  if (!e.target.classList.contains("row-main")) return;
+  const k = e.key;
+  if (k === "ArrowRight") { e.preventDefault(); decide(it, "approve"); }
+  else if (k === "ArrowLeft") { e.preventDefault(); decide(it, "skip"); }
+  else if (k === "a" || k === "A") { e.preventDefault(); toggleAsk(it); }
+  else if (k === "ArrowDown" || k === "ArrowUp") {
+    e.preventDefault();
+    const mains = $$(".row:not(.leaving) .row-main", rowsEl);
+    mains[mains.indexOf(e.target) + (k === "ArrowDown" ? 1 : -1)]?.focus();
   }
 });
 
-$("#rows").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const li = e.target.closest(".row");
-  const it = S.items.find((x) => x.id === +li.dataset.id);
-  const v = e.target.querySelector("input").value.trim();
-  if (!v) return;
-  const key = /pay|point|money|pts/i.test(v) ? "pay" : /risk|safe|danger|break/i.test(v) ? "risks" : /why|reason/i.test(v) ? "why" : null;
-  ask(it, key, v);
-});
+// The agent looks at whatever card you point at
+rowsEl.addEventListener("pointerover", (e) => { if (e.pointerType === "mouse") lookAt(e.target.closest(".row")); });
+rowsEl.addEventListener("pointerleave", () => lookAt(null));
+rowsEl.addEventListener("focusin", (e) => lookAt(e.target.closest(".row")));
+rowsEl.addEventListener("focusout", () => lookAt(null));
 
-$("#rows").addEventListener("keydown", (e) => {
-  if (e.key !== "Escape") return;
-  const li = e.target.closest(".row");
-  const it = li && S.items.find((x) => x.id === +li.dataset.id);
-  if (it?.asking) { it.asking = false; it.dirty = true; renderRows(); rowEls.get(it.id).querySelector("[data-act=ask]").focus(); }
+/* ---------- swipe: right approves, left skips ---------- */
+let drag = null;
+let swallowClick = false;
+rowsEl.addEventListener("pointerdown", (e) => {
+  const main = e.target.closest(".row-main");
+  if (!main || e.button || e.target.closest("button") || main.closest(".leaving")) return;
+  drag = { li: main.parentElement, main, x0: e.clientX, y0: e.clientY, dx: 0, on: false, pid: e.pointerId, th: Math.min(110, main.offsetWidth * 0.3) };
 });
+rowsEl.addEventListener("pointermove", (e) => {
+  if (!drag || e.pointerId !== drag.pid) return;
+  const dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+  if (!drag.on) {
+    if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+    if (Math.abs(dx) < 8) return;
+    drag.on = true;
+    drag.main.setPointerCapture(e.pointerId);
+    drag.li.classList.add("dragging");
+    hideTip();
+  }
+  const lim = drag.main.offsetWidth * 0.6;
+  const x = Math.max(-lim, Math.min(lim, dx));
+  drag.dx = x;
+  drag.main.style.transform = `translateX(${x}px)`;
+  drag.li.style.setProperty("--p", Math.min(1, Math.abs(x) / drag.th).toFixed(2));
+  drag.li.classList.toggle("to-ok", x > 0);
+  drag.li.classList.toggle("to-skip", x < 0);
+  drag.li.classList.toggle("armed", Math.abs(x) >= drag.th);
+});
+function endDrag() {
+  if (!drag) return;
+  const d = drag;
+  drag = null;
+  if (!d.on) return;
+  swallowClick = true;
+  setTimeout(() => (swallowClick = false), 50);
+  d.li.classList.remove("dragging");
+  const it = find(+d.li.dataset.id);
+  if (it && Math.abs(d.dx) >= d.th) return decide(it, d.dx > 0 ? "approve" : "skip");
+  d.main.style.transform = "";
+  d.li.style.setProperty("--p", 0);
+  d.li.classList.remove("to-ok", "to-skip", "armed");
+}
+rowsEl.addEventListener("pointerup", endDrag);
+rowsEl.addEventListener("pointercancel", endDrag);
+
+/* ---------- tooltips (hover, focus, or tap) ---------- */
+const tip = $("#tip");
+let tipFor = null;
+function showTip(el) {
+  const src = el.dataset.tip;
+  if (!src) return;
+  tip.innerHTML = src.startsWith("#") ? $(src).innerHTML : esc(src);
+  tip.hidden = false;
+  const r = el.getBoundingClientRect();
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  const left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2));
+  const top = r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8;
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
+  tip.classList.add("show");
+  if (tipFor && tipFor !== el) tipFor.removeAttribute("aria-describedby");
+  if (!el.hasAttribute("aria-describedby")) el.setAttribute("aria-describedby", "tip");
+  tipFor = el;
+}
+function hideTip() {
+  if (!tipFor) return;
+  if (tipFor.getAttribute("aria-describedby") === "tip") tipFor.removeAttribute("aria-describedby");
+  tipFor = null;
+  tip.classList.remove("show");
+  tip.hidden = true;
+}
+document.addEventListener("pointerover", (e) => {
+  if (e.pointerType !== "mouse" || drag?.on) return;
+  const el = e.target.closest("[data-tip]");
+  if (el && el !== tipFor) showTip(el);
+  else if (!el && tipFor) hideTip();
+});
+document.addEventListener("focusin", (e) => {
+  const el = e.target.closest?.("[data-tip]");
+  if (el && el.matches(":focus-visible")) showTip(el);
+  else hideTip();
+});
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-tip-tap]");
+  if (!el) return e.target.closest("[data-tip]") ? null : hideTip();
+  if (tipFor === el && e.pointerType !== "mouse") hideTip();
+  else showTip(el);
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
+addEventListener("scroll", hideTip, { passive: true });
 
 /* ---------- agent controls ---------- */
-$("#steps").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-step]");
-  if (!b) return;
-  const i = +b.dataset.step;
-  S.openStep = S.openStep === i ? null : i;
-  renderSteps();
-  $(`[data-step="${i}"]`).focus();
-});
+$$(".goal").forEach((g) => g.addEventListener("click", () => start(g.dataset.goal)));
 
 $("#btn-pause").addEventListener("click", () => {
-  if (S.mode === "run") { S.mode = "paused"; announce("Agent paused"); toast("Agent paused"); }
-  else if (S.mode === "paused") { S.mode = "run"; announce("Agent resumed"); toast("Agent resumed"); }
+  if (S.mode === "run") { S.mode = "paused"; lookAt(null); announce("Agent paused"); toast("Paused"); }
+  else if (S.mode === "paused") { S.mode = "run"; announce("Agent resumed"); toast("Resumed"); }
   renderRun(); renderSteps();
   $("#btn-pause").focus();
 });
 
 $("#btn-stop").addEventListener("click", () => {
-  if (S.mode === "stopped" || S.mode === "idle") { start(); }
-  else { S.mode = "stopped"; S.openStep = null; addLog(false, "Stopped by you"); announce("Agent stopped"); toast("Agent stopped"); renderAll(); }
+  if (S.mode === "stopped" || S.mode === "idle") start(S.goal ? null : "work");
+  else { S.mode = "stopped"; addLog(false, "Stopped by you"); announce("Agent stopped"); toast("Stopped"); renderAll(); }
   $("#btn-stop").focus();
 });
 
-$$('input[name="auto"]').forEach((r) => r.addEventListener("change", () => {
-  const before = visible().length;
-  S.auto = +r.value;
-  S.items.forEach((i) => { if (!i.done && i.level >= S.auto && !rowEls.has(i.id)) i.fresh = true; });
+const autoEl = $("#auto");
+function setAuto(v) {
+  if (v === S.auto) return;
+  S.auto = v;
+  autoEl.value = v;
+  autoEl.style.setProperty("--v", `${(v - 1) * 50}%`);
+  autoEl.setAttribute("aria-valuetext", AUTO[v]);
+  $$(".auto-ic button").forEach((b) => b.classList.toggle("on", +b.dataset.auto === v));
+  // cards handed back by the agent fly out of it; cards it takes over fly into it
+  S.items.forEach((i) => { if (!i.done && i.level >= v && !rowEls.has(i.id)) i.from = "agent"; });
   renderAll();
-  const after = visible().length;
-  const label = $(`label[for="${r.id}"]`).textContent;
-  if (S.phase === 3) toast(`${label}: ${after} need you${after < before ? `, ${before - after} handled` : ""}`);
-  announce(`${label}. ${after} items need you.`);
-}));
-
-/* ---------- goal ---------- */
-function syncChips() {
-  $$(".goal .chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.goal === S.goal));
+  const n = visible().length;
+  announce(`${AUTO[v]}. ${n} need you.`);
+  clearTimeout(setAuto.h);
+  setAuto.h = setTimeout(() => S.phase === 3 && toast(`${AUTO[v]} · ${n} need you`), 350);
 }
-$("#goal-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const v = $("#goal-input").value.trim();
-  if (!v) return $("#goal-input").focus();
-  start(v);
-});
-$$(".goal .chip").forEach((c) => c.addEventListener("click", () => {
-  $("#goal-input").value = c.dataset.goal;
-  start(c.dataset.goal);
-}));
+autoEl.addEventListener("input", () => setAuto(+autoEl.value));
+$$(".auto-ic button").forEach((b) => b.addEventListener("click", () => setAuto(+b.dataset.auto)));
 
 /* ---------- tabs ---------- */
 const tabs = $$('[role="tab"]');
@@ -534,17 +675,6 @@ tabs.forEach((t, i) => {
   });
 });
 
-/* ---------- boot ---------- */
-S.live = clone(ds().live);
-S.log = [
-  { ok: false, text: "Flagged #377 as duplicate", at: new Date(Date.now() - 52 * 60e3) },
-  { ok: true, text: "Confirmed #401 as verifier", at: new Date(Date.now() - 34 * 60e3) },
-  { ok: true, text: "Kept claim on #389 active", at: new Date(Date.now() - 12 * 60e3) },
-];
-syncChips();
-renderAll();
-setTimeout(() => start("Find work"), 700);
-
 /* ---------- filter bar: fade the edge that has more to scroll ---------- */
 (() => {
   const f = $(".filters");
@@ -556,3 +686,14 @@ setTimeout(() => start("Find work"), 700);
   addEventListener("resize", sync);
   sync();
 })();
+
+/* ---------- boot ---------- */
+S.log = [
+  { ok: false, text: "Flagged #377 as duplicate", at: new Date(Date.now() - 52 * 60e3) },
+  { ok: true, text: "Confirmed #401", at: new Date(Date.now() - 34 * 60e3) },
+  { ok: true, text: "Kept claim on #389", at: new Date(Date.now() - 12 * 60e3) },
+];
+autoEl.style.setProperty("--v", "50%");
+$('.auto-ic [data-auto="2"]').classList.add("on");
+renderAll();
+setTimeout(() => S.mode === "idle" && start("work"), 1200);
