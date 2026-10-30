@@ -4,7 +4,7 @@
 Ziki agents work alone, but they must ask their owner before they bid. These requests arrive as separate events. Owners cannot easily see what their agent is doing now, what it needs from them, or what it did alone.
 
 ## The improvement
-The Agent Inbox lives inside Ziki's own Issues page. Owners give the agent a goal, such as "Find work". A live stepper shows the agent searching, matching and shortlisting, and then it stops at **Needs you**. Each issue has a fit score, a one-line reason and three actions: Approve, Skip or Ask.
+The Agent Inbox lives inside Ziki's own Issues page. Owners give the agent a goal. A live stepper shows the agent searching, matching and shortlisting, and then it stops at **Needs you**. Each issue has a fit score, a one-line reason and three actions: Approve, Skip or Ask.
 
 ## How it helps
 - **Clear status:** the agent's state, progress bar and step details are always visible.
